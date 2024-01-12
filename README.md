@@ -1,110 +1,83 @@
 # tutor_seeking_problem
 
 
-In this project, you will be developing a program to check the file system consistency.
-The program, called as fcheck, reads a file system image and checks its consistency.
-When the image is not consistent, fcheck should output appropriate error message.
-You can do this project individually or with a partner. You cannot share your work with
-anyone other than your project partner. Do not look at anyone else’s code.
-Warning: if you plagiarize, you will be reported to OCSC.
-This project can be developed and executed in any of the cs* machines.
-A Basic Checker
-For this project, you will use an xv6 file system image as the basic image that you will be
-reading and checking. The file include/fs.h includes the basic structures you need to
-understand, including the superblock, on disk inode format (struct dinode), and
-directory entry format (struct dirent). The file ‘tools/mkfs.c’ will also be useful to look at,
-to see how an empty file-system image is created.
-Much of this project will be figuring out the exact on-disk format xv6 uses for its file
-system, and then writing checks to see if various parts of that structure are consistent.
-Thus, reading through mkfs.c and the file system code itself will help you understand
-how xv6 uses the bits in the image to record persistent information.
-Your program should read the file system image and determine the consistency of
-several rules specified below. When a problem is detected, print the error message,
-exactly as shown below in bold, to standard error and exit immediately with exit code
-1 (i.e., call exit(1)).
-1. Each inode is either unallocated or one of the valid types (T_FILE, T_DIR, T_DEV).
-If not, print ERROR: bad inode.
-2. For in-use inodes, each block address that is used by the inode is valid (points to
-a valid data block address within the image). If the direct block is used and is
-invalid, print ERROR: bad direct address in inode.; if the indirect block is in
-use and is invalid, print ERROR: bad indirect address in inode.
-3. Root directory exists, its inode number is 1, and the parent of the root directory is
-itself. If not, print ERROR: root directory does not exist.
-4. Each directory contains . and .. entries, and the . entry points to the directory
-itself. If not, print ERROR: directory not properly formatted.
-5. For in-use inodes, each block address in use is also marked in use in the bitmap.
-If not, print ERROR: address used by inode but marked free in bitmap .
-6. For blocks marked in-use in bitmap, the block should actually be in-use in an
-inode or indirect block somewhere. If not, print ERROR: bitmap marks block
-in use but it is not in use.
-7. For in-use inodes, each direct address in use is only used once. If not,
-print ERROR: direct address used more than once.
-8. For in-use inodes, each indirect address in use is only used once. If not,
-print ERROR: indirect address used more than once.
-9. For all inodes marked in use, each must be referred to in at least one directory. If
-not, print ERROR: inode marked use but not found in a directory.
-10. For each inode number that is referred to in a valid directory, it is actually marked
-in use. If not, print ERROR: inode referred to in directory but marked
-free.
-11. Reference counts (number of links) for regular files match the number of times
-file is referred to in directories (i.e., hard links work correctly). If not, print ERROR:
-bad reference count for file.
-12. No extra links allowed for directories (each directory only appears in one other
-directory). If not, print ERROR: directory appears more than once in file
-system.
-Ensure your output the error message exactly as specified (including the ‘.’ at the end.)
-We will use automated script to grade your program. If the output does not match the
-expected output for a test case, it will show that your program failed the test case.
-Other Specifications
-Your program must be invoked exactly as follows:
-prompt> fcheck file_system_image
-The image file is a file that contains the file system image. If no image file is provided,
-you should print the usage error shown below:
-prompt> fcheck
-Usage: fcheck <file_system_image>
-This output must be printed to standard error and exit with the error code of 1.
-If the file system image does not exist, you should print image not found. to standard
-error and exit with the error code of 1.
-If fcheck detects any one of the 12 errors above, it should print the specific error to
-standard error and exit with error code 1.
-If fcheck detects none of the problems listed above, it should exit with return code of 0
-and not print anything.
-Hints
-It may be worth looking into using mmap() for the project. Using mmap() to access the
-file-system image will make your (kernel programming) life easier.
-Make sure to look at fs.img, which is a file system image created when you make xv6
-by the tool mkfs (found in the tools/directory of xv6). The output of this tool is the
-file fs.img and it is a consistent file-system image. The tests, of course, will put
-inconsistencies into this image, but your tool should work over a consistent image as
-well. Study mkfs and its output to progress well on this project.
-P4 discussion video from a prior semester is posted on class teams’ page. Please watch.
-xv6 Source code
-The tar file of xv6 source code for this project is /cs5348-xv6/src/xv6.tar.gz. Copy this file
-to your local working directory for this project and extract the source code tree, and run
-‘make’ to create the fs.img.
-Starter code (/cs5348-xv6/src/p4Starter.c) is provided.
-Testing
-Make sure you compile your program as follows:
-gcc fcheck.c -o fcheck -Wall -Werror -O -std=gnu99
-Sample file images with inconsistencies are available in the directory
-/cs5348-xv6/src/testcases/P4/
-Submission
-Copy your entire source code (fcheck.c and any other include files) to the directory
-/cs5348-xv6/xxxyyyyyy/P4/. Copy only the relevant files, and not the entire xv6 source
-tree.
-If you have worked with a partner, only one of you need to submit the files. But both
-should create a text file named PARTNER in /cs5348-xv6/xxxyyyyy/P4 and save your
-partner’s name and netid in the file.
-Grading Policy
-Style: Source code should be well structured with adequate comments clearly describing
-the different parts and functionalities implemented.
-We will compile your program in any of the cs* machine and execute in net* machines. If
-your program does not compile in any of the cs* machines you will get 0 points. You don’t
-need to check whether your program compiles in all the cs* machines. If it compiles in
-one of the cs* machines, it should suffice.
-You may have to demonstrate your work to the TA. If you are not able to explain how
-your code works, then you will not get any points even though your code may work.
-Rubric:
-code review 30 points
-style 10 points
-24 test cases (24 x 2.5) 60 points
+Seeking Tutor Problem
+The computer science department runs a mentoring center (csmc) to help undergraduate
+students with their programming assignments. The lab has a coordinator and several
+tutors to assist the students. The waiting area of the center has several chairs. Initially, all
+the chairs are empty. The coordinator is waiting for the students to arrive. The tutors are
+either waiting for the coordinator to notify that there are students waiting or they are
+busy tutoring. The tutoring area is separate from the waiting area.
+A student while programming for their project, decides to go to csmc to get help from a
+tutor. After arriving at the center, the student sits in an empty chair in the waiting area
+and waits to be called for tutoring. If no chairs are available, the student will go back to
+programming and come back to the center later. Once a student arrives, the coordinator
+queues the student based on the student’s priority (details on the priority discussed
+below), and then the coordinator notifies an idle tutor. A tutor, once woken up, finds the
+student with the highest priority and begins tutoring. A tutor after helping a student, waits
+for the next student. A student, after receiving help from a tutor goes back to
+programming.
+The priority of a student is based on the number of times the student has taken help from
+a tutor. A student visiting the center for the first time gets the highest priority. In general,
+a student visiting to take help for the ith time has a priority higher than the priority of the
+student visiting to take help for the kth time for any k > i. If two students have the same
+priority, then the student who came first has a higher priority.
+Using POSIX threads, mutex locks, and semaphores implement a solution that
+synchronizes the activities of the coordinator, tutors, and the students. Some hints to
+implement this project are provided later in the description.
+The total number of students, the number of tutors, the number of chairs, and the number
+of times a student seeks a tutor’s help are passed as command line arguments as shown
+below (csmc is the name of the executable):
+csmc #students #tutors #chairs #help
+csmc 10 3 4 5
+csmc 2000 10 20 4
+Once a student thread takes the required number of helps from the tutors, it should
+terminate. Once all the student threads are terminated, the tutor threads, the coordinator
+thread, and the main program should be terminated.
+Your program should work for any number of students, tutors, chairs and help sought.
+Allocate memory for data structures dynamically based on the input parameter(s).
+Note, pthread_create() may throw error if you try to create a large number of threads.
+Check the file ~/.bashrc. There may be line 'ulimit -u 100' in it. This limits you from
+creating more than 100 threads. Modify the line to set ulimit to 2100.
+Output
+Your program must output the following at appropriate times.
+Output of a student thread (x and y are ids):
+S: Student x takes a seat. Empty chairs = <# of empty chairs
+after student x took a seat>.
+S: Student x found no empty chair. Will try again later.
+S: Student x received help from Tutor y.
+Output of the coordinator threads (x is the id, and p is the priority):
+C: Student x with priority p added to the queue. Waiting
+students now = <# students waiting>. Total requests = <total #
+requests (notifications sent) by students for tutoring so far>
+Output of a tutor thread after tutoring a student (x and y are ids):
+T: Student x tutored by Tutor y. Students tutored now = <#
+students receiving help now>. Total sessions tutored = <total
+number of tutoring sessions completed so far by all the tutors>
+Your program should not output anything else. You may use several printf statements for
+debugging. Disable them before you submit the code. You will lose one point for every
+line of unspecified output. If you are testing your program with a large number of threads,
+redirect the output to a file. It will save time for you. Also, print all error messages on
+stderr. This will avoid the error message redirection along with the output.
+Implementation Hints
+Using Pthreads, begin by creating n students and m tutors as separate threads. (n and m
+are arguments to the program.) The coordinator will run as a separate thread. Student
+threads will alternate between programming for a period and seeking help from the tutor.
+If a tutor is available, they will obtain help. Otherwise, they will either sit in a chair in the
+waiting area or if no chairs are available, resume programming and seek help later.
+When a student arrives and finds an empty chair, the student must notify the coordinator
+using a semaphore. The coordinator then must queue the student according to the
+student’s priority. How does the coordinator know which student has arrived? How does
+the tutor find the student with the highest priority? (Clue: You need two shared data
+structures here. Also, you just need a simple data structure for implementing priority.)
+When a tutor is free (either initially or after helping a student), the tutor must wait for the
+coordinator to notify of a waiting student (use another semaphore). A tutor should then
+wake up the student with highest priority. A tutor cannot wake up any student.
+Simulate the programming part of a student thread by sleeping for a random amount of
+time up to 2 ms. For the tutoring part, make both the student and the tutor thread sleep
+for 0.2 ms.
+For details on how to use pthreads, synchronization primitives mutex and semaphores see
+man pages. For a more detailed tutorial on Pthreads and Semaphores, see
+https://computing.llnl.gov/tutorials/pthreads/#Thread
+You may also want to look at the solution for sleeping barber problem. It will give you
+some clues about how to solve the problem this project poses.
